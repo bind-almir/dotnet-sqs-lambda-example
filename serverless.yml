@@ -1,0 +1,46 @@
+service: example
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  lambdaHashingVersion: 20201221
+
+package:
+  individually: true
+  artifact: bin/Release/netcoreapp3.1/hello.zip
+
+functions:
+
+  function-triggered-by-sqs:
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::FunctionTriggeredBySQS
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - QueueThatWillTriggerLambda
+              - Arn
+
+# handler points to AssemblyName::Namespace.Class::Method
+  second-function-with-http-trigger:
+    handler: CsharpHandlers::AwsDotnetCsharp.Handler::SecondFunction
+    events:
+      - http:
+          cors: true
+          method: get
+          path: /   
+
+# section below creates resources (cloudformation == arm)
+# we are referencing QueueThatWillTriggerLambda by Amazon Resource Number in the function event list 
+# when message arrives it will be passed to the lambda
+
+resources:
+  Resources:
+    QueueThatWillTriggerLambda:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "QueueThatWillTriggerLambda"
+  
+      
+  
