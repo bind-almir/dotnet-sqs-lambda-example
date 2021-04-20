@@ -11,6 +11,7 @@ namespace AwsDotnetCsharp
 
       private readonly JsonSerializerOptions _options;
 
+      [LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.CamelCaseLambdaJsonSerializer))]
       public string FunctionTriggeredBySQS(SQSEvent sqsEvent)
       {
 

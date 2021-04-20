@@ -4,6 +4,8 @@ frameworkVersion: '2'
 
 provider:
   name: aws
+  region: us-east-1
+  stage: dev
   runtime: dotnetcore3.1
   lambdaHashingVersion: 20201221
 
@@ -28,11 +30,11 @@ functions:
     events:
       - http:
           cors: true
-          method: get
+          method: post
           path: /   
 
 # section below creates resources (cloudformation == arm)
-# we are referencing QueueThatWillTriggerLambda by Amazon Resource Number in the function event list 
+# we are referencing QueueThatWillTriggerLambda by Amazon Resource Number in the function-triggered-by-sqs event list 
 # when message arrives it will be passed to the lambda
 
 resources:

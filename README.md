@@ -10,6 +10,6 @@ run `build.cmd` or `./build.sh` depending on your platform
 
 *Deploy*
 
-run `sls deploy`
+run `sls deploy` from cmd prompt on windows or terminal in *nix system
 
 
